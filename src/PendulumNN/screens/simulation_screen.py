@@ -32,9 +32,10 @@ class SimulationScreen(Screen):
     def handle_event(self) -> None:
         state = self._simulation.input_state_vector
         logits = self._model(state.to("cuda"))
-        # action = Categorical(logits=logits).sample()
-        action_vector = F.one_hot(logits.argmax(), self._simulation.output_dim)
-        self._simulation.handle_output_vector(action_vector)
+        action = Categorical(logits=logits).sample()
+        self._simulation.handle_output_vector(
+            F.one_hot(action, self._simulation.output_dim)
+        )
 
         self._user_control()
 

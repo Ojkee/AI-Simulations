@@ -1,14 +1,14 @@
 # TODO
 - [ ] Settings menu / config file
 - [ ] AI
-  - [ ] Own Neural Net
+  - [x] Own Neural Net
   - [ ] NEAT 
   - [ ] AutoML
-- [ ] Neural Network visualisation
-- [ ] Training off screen
+- [x] Neural Network visualisation
+- [x] Training off screen
 
 # ONGOING
-- [ ] Neural Network reimplementation
+- [ ] Reward/Loss visualisation
 
 
 # DONE

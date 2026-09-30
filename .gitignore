@@ -31,3 +31,7 @@ uv.lock
 .idea/
 .vscode/
 *.swp
+
+playgrounds/Orbito/*.jsonl
+playgrounds/Orbito/*.pkl
+
