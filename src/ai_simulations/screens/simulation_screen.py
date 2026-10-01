@@ -1,13 +1,12 @@
 import pygame
 import torch
-
-from torch.distributions import Categorical
 import torch.nn.functional as F
+from torch.distributions import Categorical
 
-from PendulumNN.ai import AIModel
-from PendulumNN.common import Context
-from PendulumNN.screens import Screen
-from PendulumNN.simulations import Simulation
+from ai_simulations.ai import AIModel
+from ai_simulations.common import Context
+from ai_simulations.screens import Screen
+from ai_simulations.simulations import Simulation
 
 
 class SimulationScreen(Screen):

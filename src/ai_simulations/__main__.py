@@ -1,4 +1,4 @@
-from PendulumNN.window import Window
+from ai_simulations.window import Window
 
 
 def main() -> None:

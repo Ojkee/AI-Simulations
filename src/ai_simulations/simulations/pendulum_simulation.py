@@ -1,10 +1,12 @@
-from itertools import pairwise
 from dataclasses import dataclass
 from functools import cache
+from itertools import pairwise
+
 import pygame
 import torch
-from PendulumNN.common import Colors, Context
-from PendulumNN.simulations.simulation import Simulation
+
+from ai_simulations.common import Colors, Context
+from ai_simulations.simulations.simulation import Simulation
 
 pos_t = tuple[int, int]
 

@@ -3,10 +3,9 @@ from itertools import pairwise
 
 import pygame
 import torch
-
 from torch import nn
 
-from PendulumNN.common import Colors, Context
+from ai_simulations.common import Colors, Context
 
 
 class NeuralNetwork(nn.Module):

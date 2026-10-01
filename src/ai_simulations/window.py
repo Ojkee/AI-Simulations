@@ -1,11 +1,11 @@
-from __future__ import annotations
+from typing import Self
 
 import pygame
 
-from PendulumNN.ai.neural_net import NeuralNetwork
-from PendulumNN.common import Colors, Context
-from PendulumNN.screens import Screen, SimulationScreen
-from PendulumNN.simulations import PendulumSimulation
+from ai_simulations.ai.neural_net import NeuralNetwork
+from ai_simulations.common import Colors, Context
+from ai_simulations.screens import Screen, SimulationScreen
+from ai_simulations.simulations import PendulumSimulation
 
 
 class Window:
@@ -23,7 +23,7 @@ class Window:
             ctx=self.ctx,
         )
 
-    def __enter__(self) -> Window:
+    def __enter__(self) -> Self:
         pygame.init()
         pygame.font.init()
         self.ctx.surface = pygame.display.set_mode((self.ctx.width, self.ctx.height))

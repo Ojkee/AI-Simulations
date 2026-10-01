@@ -1,11 +1,14 @@
 from __future__ import annotations
-from enum import Enum
+
 from dataclasses import dataclass
+from enum import Enum
 
 import pygame
 
+Color_t = tuple[int, int, int]
 
-class Colors(tuple[int, int, int], Enum):
+
+class Colors(Color_t, Enum):
     BEIGE = (255, 248, 231)
     GREY = (51, 51, 51)
     LIGHT_GREY = (131, 131, 131)

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import torch
 
-from PendulumNN.common import Context
+from ai_simulations.common import Context
 
 
 class Simulation(ABC):

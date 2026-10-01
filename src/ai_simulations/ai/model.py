@@ -2,7 +2,7 @@ from typing import Protocol
 
 import torch
 
-from PendulumNN.common import Context
+from ai_simulations.common import Context
 
 
 class AIModel(Protocol):
