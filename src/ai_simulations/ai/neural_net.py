@@ -1,4 +1,3 @@
-from functools import cache
 from itertools import pairwise
 
 import pygame
@@ -27,7 +26,7 @@ class NeuralNetwork(nn.Module):
             hidden_dims,
             output_dim,
         )
-        self.out: torch.Tensor
+        self.out: torch.Tensor = torch.zeros(output_dim)
 
         self._optimizer = torch.optim.AdamW(  # type: ignore
             self._layers.parameters(),
@@ -75,6 +74,8 @@ class _NeuralNetworkDrawer:
 
     def __init__(self, dims: list[int]) -> None:
         self._dims = dims
+        self._xs: list[int] | None = None
+        self._ys: list[list[int]] | None = None
 
     def draw(
         self,
@@ -83,8 +84,8 @@ class _NeuralNetworkDrawer:
         linears: list[nn.Linear],
         out: torch.Tensor,
     ) -> None:
-        xs = self._xs(ctx.width, offset[0])
-        ys = self._ys(ctx.height, offset[1])
+        xs = self.xs(ctx.width, offset[0])
+        ys = self.ys(ctx.height, offset[1])
 
         def _line(i: int, j: int, k: int, color: Colors = Colors.BEIGE) -> None:
             _in = (xs[i], ys[i][j])
@@ -114,21 +115,23 @@ class _NeuralNetworkDrawer:
             color = Colors.RED if out[i] <= 0 else Colors.GREEN
             pygame.draw.circle(ctx.surface, color, (xs[-1], y), radius=8)
 
-    @cache
-    def _xs(self, screen_width: int, offset: int) -> list[int]:
-        width = screen_width - offset
-        interval_x = width // (len(self._dims) + 1)
-        cx = (width - interval_x * (len(self._dims) - 1)) // 2
-        return [cx + offset + interval_x * i for i in range(len(self._dims))]
+    def xs(self, screen_width: int, offset: int) -> list[int]:
+        if self._xs is None:
+            width = screen_width - offset
+            interval_x = width // (len(self._dims) + 1)
+            cx = (width - interval_x * (len(self._dims) - 1)) // 2
+            self._xs = [cx + offset + interval_x * i for i in range(len(self._dims))]
+        return self._xs
 
-    @cache
-    def _ys(self, screen_height: int, offset: int) -> list[list[int]]:
-        height = screen_height - offset
+    def ys(self, screen_height: int, offset: int) -> list[list[int]]:
+        if self._ys is None:
+            height = screen_height - offset
 
-        result = []
-        for dim in self._dims:
-            interval = max(self.MAX_INTERVAL_Y, height // (dim + 1))
-            col_offset = (height - (dim - 1) * interval) // 2
-            column = [offset + col_offset + i * interval for i in range(dim)]
-            result.append(column)
-        return result
+            result = []
+            for dim in self._dims:
+                interval = max(self.MAX_INTERVAL_Y, height // (dim + 1))
+                col_offset = (height - (dim - 1) * interval) // 2
+                column = [offset + col_offset + i * interval for i in range(dim)]
+                result.append(column)
+            self._ys = result
+        return self._ys

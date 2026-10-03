@@ -1,3 +1,5 @@
+from typing import Self
+
 import pygame
 import torch
 import torch.nn.functional as F
@@ -16,7 +18,7 @@ class SimulationScreen(Screen):
         model: AIModel,
         ctx: Context,
     ) -> None:
-        super().__init__()
+        super().__init__(ctx)
         self._simulation = simulation
         self._model = model
         self._ctx = ctx
@@ -28,7 +30,7 @@ class SimulationScreen(Screen):
 
         self._simulation.reset()
 
-    def handle_event(self) -> None:
+    def handle_event(self) -> Self:
         state = self._simulation.input_state_vector
         logits = self._model(state.to("cuda"))
         action = Categorical(logits=logits).sample()
@@ -37,6 +39,7 @@ class SimulationScreen(Screen):
         )
 
         self._user_control()
+        return self
 
     def update(self) -> None:
         if self.training:
@@ -45,9 +48,9 @@ class SimulationScreen(Screen):
 
         self._simulation.update()
 
-    def draw(self, ctx: Context) -> None:
-        self._simulation.draw(ctx)
-        self._model.draw(ctx, (0, ctx.height // 2))
+    def draw(self) -> None:
+        self._simulation.draw(self.ctx)
+        self._model.draw(self.ctx, (0, self.ctx.height // 2))
 
     def _user_control(self) -> None:
         for event in pygame.event.get():
@@ -59,7 +62,7 @@ class SimulationScreen(Screen):
 
     def train_model(self) -> None:
         GAMMA = 0.99
-        UPDATE_EVERY = 50  # co ile kroków robić backward()
+        UPDATE_EVERY = 50
         for epoch in range(self._epochs):
             self._simulation.reset()
             self._run_episode(GAMMA, UPDATE_EVERY)
@@ -86,7 +89,6 @@ class SimulationScreen(Screen):
             if len(rewards) == update_every or step == self._steps_per_simulation - 1:
                 self._update_from_window(log_probs, rewards, gamma)
                 log_probs, rewards = [], []
-                # print(self._model._layers[0].weight)
 
     def _update_from_window(
         self,
