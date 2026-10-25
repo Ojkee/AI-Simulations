@@ -34,4 +34,5 @@ uv.lock
 
 playgrounds/Orbito/*.jsonl
 playgrounds/Orbito/*.pkl
+playgrounds/DoodleGan/*.npz
 

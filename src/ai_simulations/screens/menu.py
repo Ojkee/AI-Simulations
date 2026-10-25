@@ -1,5 +1,6 @@
+from collections.abc import Callable
+
 import pygame
-from torch import Callable
 
 from ai_simulations.ai.neural_net import NeuralNetwork
 from ai_simulations.common import Context
